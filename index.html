@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>keypitキーピット/IoTでつなぐ鍵管理のキューピット</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- CSS -->
+
+
+  <!--Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&amp;display=swap"
+    rel="stylesheet">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="dns-prefetch" href="//s.w.org">
+  <script type="text/javascript">
+    window._wpemojiSettings = { "baseUrl": "https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/", "ext": ".png", "svgUrl": "https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/", "svgExt": ".svg", "source": { "concatemoji": "https:\/\/fujiwebcreator.com\/keypit-test\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.9.2" } };
+    /*! This file is auto-generated */
+    !function (e, a, t) { var n, r, o, i = a.createElement("canvas"), p = i.getContext && i.getContext("2d"); function s(e, t) { var a = String.fromCharCode; p.clearRect(0, 0, i.width, i.height), p.fillText(a.apply(this, e), 0, 0); e = i.toDataURL(); return p.clearRect(0, 0, i.width, i.height), p.fillText(a.apply(this, t), 0, 0), e === i.toDataURL() } function c(e) { var t = a.createElement("script"); t.src = e, t.defer = t.type = "text/javascript", a.getElementsByTagName("head")[0].appendChild(t) } for (o = Array("flag", "emoji"), t.supports = { everything: !0, everythingExceptFlag: !0 }, r = 0; r < o.length; r++)t.supports[o[r]] = function (e) { if (!p || !p.fillText) return !1; switch (p.textBaseline = "top", p.font = "600 32px Arial", e) { case "flag": return s([127987, 65039, 8205, 9895, 65039], [127987, 65039, 8203, 9895, 65039]) ? !1 : !s([55356, 56826, 55356, 56819], [55356, 56826, 8203, 55356, 56819]) && !s([55356, 57332, 56128, 56423, 56128, 56418, 56128, 56421, 56128, 56430, 56128, 56423, 56128, 56447], [55356, 57332, 8203, 56128, 56423, 8203, 56128, 56418, 8203, 56128, 56421, 8203, 56128, 56430, 8203, 56128, 56423, 8203, 56128, 56447]); case "emoji": return !s([10084, 65039, 8205, 55357, 56613], [10084, 65039, 8203, 55357, 56613]) }return !1 }(o[r]), t.supports.everything = t.supports.everything && t.supports[o[r]], "flag" !== o[r] && (t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && t.supports[o[r]]); t.supports.everythingExceptFlag = t.supports.everythingExceptFlag && !t.supports.flag, t.DOMReady = !1, t.readyCallback = function () { t.DOMReady = !0 }, t.supports.everything || (n = function () { t.readyCallback() }, a.addEventListener ? (a.addEventListener("DOMContentLoaded", n, !1), e.addEventListener("load", n, !1)) : (e.attachEvent("onload", n), a.attachEvent("onreadystatechange", function () { "complete" === a.readyState && t.readyCallback() })), (n = t.source || {}).concatemoji ? c(n.concatemoji) : n.wpemoji && n.twemoji && (c(n.twemoji), c(n.wpemoji))) }(window, document, window._wpemojiSettings);
+  </script>
+  <script src="https://fujiwebcreator.com/keypit-test/wp-includes/js/wp-emoji-release.min.js?ver=5.9.2"
+    type="text/javascript" defer=""></script>
+  <style type="text/css">
+    img.wp-smiley,
+    img.emoji {
+      display: inline !important;
+      border: none !important;
+      box-shadow: none !important;
+      height: 1em !important;
+      width: 1em !important;
+      margin: 0 0.07em !important;
+      vertical-align: -0.1em !important;
+      background: none !important;
+      padding: 0 !important;
+    }
+  </style>
+  <link rel="stylesheet" id="wp-block-library-css"
+    href="https://fujiwebcreator.com/keypit-test/wp-includes/css/dist/block-library/style.min.css?ver=5.9.2"
+    type="text/css" media="all">
+  <style id="global-styles-inline-css" type="text/css">
+    body {
+      --wp--preset--color--black: #000000;
+      --wp--preset--color--cyan-bluish-gray: #abb8c3;
+      --wp--preset--color--white: #ffffff;
+      --wp--preset--color--pale-pink: #f78da7;
+      --wp--preset--color--vivid-red: #cf2e2e;
+      --wp--preset--color--luminous-vivid-orange: #ff6900;
+      --wp--preset--color--luminous-vivid-amber: #fcb900;
+      --wp--preset--color--light-green-cyan: #7bdcb5;
+      --wp--preset--color--vivid-green-cyan: #00d084;
+      --wp--preset--color--pale-cyan-blue: #8ed1fc;
+      --wp--preset--color--vivid-cyan-blue: #0693e3;
+      --wp--preset--color--vivid-purple: #9b51e0;
+      --wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg, rgba(6, 147, 227, 1) 0%, rgb(155, 81, 224) 100%);
+      --wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg, rgb(122, 220, 180) 0%, rgb(0, 208, 130) 100%);
+      --wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg, rgba(252, 185, 0, 1) 0%, rgba(255, 105, 0, 1) 100%);
+      --wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg, rgba(255, 105, 0, 1) 0%, rgb(207, 46, 46) 100%);
+      --wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(169, 184, 195) 100%);
+      --wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg, rgb(74, 234, 220) 0%, rgb(151, 120, 209) 20%, rgb(207, 42, 186) 40%, rgb(238, 44, 130) 60%, rgb(251, 105, 98) 80%, rgb(254, 248, 76) 100%);
+      --wp--preset--gradient--blush-light-purple: linear-gradient(135deg, rgb(255, 206, 236) 0%, rgb(152, 150, 240) 100%);
+      --wp--preset--gradient--blush-bordeaux: linear-gradient(135deg, rgb(254, 205, 165) 0%, rgb(254, 45, 45) 50%, rgb(107, 0, 62) 100%);
+      --wp--preset--gradient--luminous-dusk: linear-gradient(135deg, rgb(255, 203, 112) 0%, rgb(199, 81, 192) 50%, rgb(65, 88, 208) 100%);
+      --wp--preset--gradient--pale-ocean: linear-gradient(135deg, rgb(255, 245, 203) 0%, rgb(182, 227, 212) 50%, rgb(51, 167, 181) 100%);
+      --wp--preset--gradient--electric-grass: linear-gradient(135deg, rgb(202, 248, 128) 0%, rgb(113, 206, 126) 100%);
+      --wp--preset--gradient--midnight: linear-gradient(135deg, rgb(2, 3, 129) 0%, rgb(40, 116, 252) 100%);
+      --wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');
+      --wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');
+      --wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');
+      --wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');
+      --wp--preset--duotone--midnight: url('#wp-duotone-midnight');
+      --wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');
+      --wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');
+      --wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');
+      --wp--preset--font-size--small: 13px;
+      --wp--preset--font-size--medium: 20px;
+      --wp--preset--font-size--large: 36px;
+      --wp--preset--font-size--x-large: 42px;
+    }
+
+    .has-black-color {
+      color: var(--wp--preset--color--black) !important;
+    }
+
+    .has-cyan-bluish-gray-color {
+      color: var(--wp--preset--color--cyan-bluish-gray) !important;
+    }
+
+    .has-white-color {
+      color: var(--wp--preset--color--white) !important;
+    }
+
+    .has-pale-pink-color {
+      color: var(--wp--preset--color--pale-pink) !important;
+    }
+
+    .has-vivid-red-color {
+      color: var(--wp--preset--color--vivid-red) !important;
+    }
+
+    .has-luminous-vivid-orange-color {
+      color: var(--wp--preset--color--luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-amber-color {
+      color: var(--wp--preset--color--luminous-vivid-amber) !important;
+    }
+
+    .has-light-green-cyan-color {
+      color: var(--wp--preset--color--light-green-cyan) !important;
+    }
+
+    .has-vivid-green-cyan-color {
+      color: var(--wp--preset--color--vivid-green-cyan) !important;
+    }
+
+    .has-pale-cyan-blue-color {
+      color: var(--wp--preset--color--pale-cyan-blue) !important;
+    }
+
+    .has-vivid-cyan-blue-color {
+      color: var(--wp--preset--color--vivid-cyan-blue) !important;
+    }
+
+    .has-vivid-purple-color {
+      color: var(--wp--preset--color--vivid-purple) !important;
+    }
+
+    .has-black-background-color {
+      background-color: var(--wp--preset--color--black) !important;
+    }
+
+    .has-cyan-bluish-gray-background-color {
+      background-color: var(--wp--preset--color--cyan-bluish-gray) !important;
+    }
+
+    .has-white-background-color {
+      background-color: var(--wp--preset--color--white) !important;
+    }
+
+    .has-pale-pink-background-color {
+      background-color: var(--wp--preset--color--pale-pink) !important;
+    }
+
+    .has-vivid-red-background-color {
+      background-color: var(--wp--preset--color--vivid-red) !important;
+    }
+
+    .has-luminous-vivid-orange-background-color {
+      background-color: var(--wp--preset--color--luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-amber-background-color {
+      background-color: var(--wp--preset--color--luminous-vivid-amber) !important;
+    }
+
+    .has-light-green-cyan-background-color {
+      background-color: var(--wp--preset--color--light-green-cyan) !important;
+    }
+
+    .has-vivid-green-cyan-background-color {
+      background-color: var(--wp--preset--color--vivid-green-cyan) !important;
+    }
+
+    .has-pale-cyan-blue-background-color {
+      background-color: var(--wp--preset--color--pale-cyan-blue) !important;
+    }
+
+    .has-vivid-cyan-blue-background-color {
+      background-color: var(--wp--preset--color--vivid-cyan-blue) !important;
+    }
+
+    .has-vivid-purple-background-color {
+      background-color: var(--wp--preset--color--vivid-purple) !important;
+    }
+
+    .has-black-border-color {
+      border-color: var(--wp--preset--color--black) !important;
+    }
+
+    .has-cyan-bluish-gray-border-color {
+      border-color: var(--wp--preset--color--cyan-bluish-gray) !important;
+    }
+
+    .has-white-border-color {
+      border-color: var(--wp--preset--color--white) !important;
+    }
+
+    .has-pale-pink-border-color {
+      border-color: var(--wp--preset--color--pale-pink) !important;
+    }
+
+    .has-vivid-red-border-color {
+      border-color: var(--wp--preset--color--vivid-red) !important;
+    }
+
+    .has-luminous-vivid-orange-border-color {
+      border-color: var(--wp--preset--color--luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-amber-border-color {
+      border-color: var(--wp--preset--color--luminous-vivid-amber) !important;
+    }
+
+    .has-light-green-cyan-border-color {
+      border-color: var(--wp--preset--color--light-green-cyan) !important;
+    }
+
+    .has-vivid-green-cyan-border-color {
+      border-color: var(--wp--preset--color--vivid-green-cyan) !important;
+    }
+
+    .has-pale-cyan-blue-border-color {
+      border-color: var(--wp--preset--color--pale-cyan-blue) !important;
+    }
+
+    .has-vivid-cyan-blue-border-color {
+      border-color: var(--wp--preset--color--vivid-cyan-blue) !important;
+    }
+
+    .has-vivid-purple-border-color {
+      border-color: var(--wp--preset--color--vivid-purple) !important;
+    }
+
+    .has-vivid-cyan-blue-to-vivid-purple-gradient-background {
+      background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;
+    }
+
+    .has-light-green-cyan-to-vivid-green-cyan-gradient-background {
+      background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;
+    }
+
+    .has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background {
+      background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;
+    }
+
+    .has-luminous-vivid-orange-to-vivid-red-gradient-background {
+      background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;
+    }
+
+    .has-very-light-gray-to-cyan-bluish-gray-gradient-background {
+      background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;
+    }
+
+    .has-cool-to-warm-spectrum-gradient-background {
+      background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;
+    }
+
+    .has-blush-light-purple-gradient-background {
+      background: var(--wp--preset--gradient--blush-light-purple) !important;
+    }
+
+    .has-blush-bordeaux-gradient-background {
+      background: var(--wp--preset--gradient--blush-bordeaux) !important;
+    }
+
+    .has-luminous-dusk-gradient-background {
+      background: var(--wp--preset--gradient--luminous-dusk) !important;
+    }
+
+    .has-pale-ocean-gradient-background {
+      background: var(--wp--preset--gradient--pale-ocean) !important;
+    }
+
+    .has-electric-grass-gradient-background {
+      background: var(--wp--preset--gradient--electric-grass) !important;
+    }
+
+    .has-midnight-gradient-background {
+      background: var(--wp--preset--gradient--midnight) !important;
+    }
+
+    .has-small-font-size {
+      font-size: var(--wp--preset--font-size--small) !important;
+    }
+
+    .has-medium-font-size {
+      font-size: var(--wp--preset--font-size--medium) !important;
+    }
+
+    .has-large-font-size {
+      font-size: var(--wp--preset--font-size--large) !important;
+    }
+
+    .has-x-large-font-size {
+      font-size: var(--wp--preset--font-size--x-large) !important;
+    }
+  </style>
+  <link rel="stylesheet" id="contact-form-7-css"
+    href="https://fujiwebcreator.com/keypit-test/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.5.3"
+    type="text/css" media="all">
+  <link rel="https://api.w.org/" href="https://fujiwebcreator.com/keypit-test/index.php/wp-json/">
+  <link rel="EditURI" type="application/rsd+xml" title="RSD"
+    href="https://fujiwebcreator.com/keypit-test/xmlrpc.php?rsd">
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml"
+    href="https://fujiwebcreator.com/keypit-test/wp-includes/wlwmanifest.xml">
+  <meta name="generator" content="WordPress 5.9.2">
+  <link rel="icon" href="https://fujiwebcreator.com/keypit-test/wp-content/uploads/2022/01/cropped-fav-32x32.png"
+    sizes="32x32">
+  <link rel="icon" href="https://fujiwebcreator.com/keypit-test/wp-content/uploads/2022/01/cropped-fav-192x192.png"
+    sizes="192x192">
+  <link rel="apple-touch-icon"
+    href="https://fujiwebcreator.com/keypit-test/wp-content/uploads/2022/01/cropped-fav-180x180.png">
+  <meta name="msapplication-TileImage"
+    content="https://fujiwebcreator.com/keypit-test/wp-content/uploads/2022/01/cropped-fav-270x270.png">
+
+</head>
+
+<body id="pagetop" cz-shortcut-listen="true">
+
+  <!--header-->
+  <header>
+    <div class="header_in">
+      <h1 class=""><a href="https://fujiwebcreator.com/keypit-test"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/logo.svg" width="120px"></a></h1>
+      <div class="header_links">
+        <ul class="hidden-sp">
+          <li><a href="#concept">keypitとは</a></li>
+          <li><a href="#solve">課題解決</a></li>
+          <li><a href="#comparison">他社比較</a></li>
+          <li><a href="#product">製品について</a></li>
+          <li><a href="#flow">導入までの流れ</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+          <li class="header_download header_btn"><a href="#contact"><span>資料をダウンロード</span></a></li>
+          <li class="header_contact header_btn"><a href="#"><span>keypitへログイン</span></a></li>
+        </ul>
+        <a class="menu-trigger visible-sp">
+          <span></span><span></span><span></span>
+        </a>
+      </div>
+    </div>
+    <nav class="g-nav visible-sp">
+      <ul class="list">
+        <li><a href="#concept">keypitとは</a></li>
+        <li><a href="#solve">課題解決</a></li>
+        <li><a href="#comparison">他社比較</a></li>
+        <li><a href="#product">製品について</a></li>
+        <li><a href="#flow">導入までの流れ</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+        <li class="header_download header_btn"><a href="#contact"><span>資料をダウンロード</span></a></li>
+        &nbsp; &nbsp; &nbsp; &nbsp;<li class="header_contact header_btn"><a href="#"><span>keypitへログイン</span></a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div id="fv">
+      <div class="fv_bg"></div>
+      <div class="fv_txt"><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/fv_txt.svg"
+          width="463px"></div>
+      <div class="fv_img"><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/fv-img.png">
+      </div>
+      <div class="fv_btn"><a href="#"><span>資料をダウンロードする</span></a></div>
+      <div class="fv_people"><img
+          src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/fv-people.png"></div>
+    </div>
+
+    <div id="concept">
+      <div class="title">
+        <p class="title_mark"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/concept-ttl.png"></p>
+        <h2 class="title_txt">keypitとは</h2>
+      </div>
+      <div class="concept_in">
+        <div class="concept_img"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/concept-img.png"></div>
+        <div class="concept_txt">
+          スムーズな鍵の受け渡しに特化した不動産御意鵜飼にとっておきのシステムです。<br>関係者だけが簡単に対象物件に入ることができ、業務の効率化にも最適です。
+        </div>
+      </div>
+    </div>
+
+    <div class="backcolor">
+
+      <div id="task">
+        <div class="title">
+          <p class="title_mark"><img src="img/merit.png" class=""></p>
+          <h2 class="title_txt">導入メリット</h2>
+        </div>
+        <div class="task_list solve_list">
+          <div class="task_one">
+            <div class="task_one_in">
+              <h3 class="task_one_ttl">管理会社</h3>
+              <div class="task_one_img"><img src="img/merit_img01.png"></div>
+            </div>
+            <ul class="task_one_txt">
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+            </ul>
+          </div>
+          <div class="task_one">
+            <div class="task_one_in">
+              <h3 class="task_one_ttl">仲介会社</h3>
+              <div class="task_one_img"><img src="img/merit_img02.png"></div>
+            </div>
+            <ul class="task_one_txt">
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+            </ul>
+          </div>
+          <div class="task_one">
+            <div class="task_one_in">
+              <h3 class="task_one_ttl">各事業</h3>
+              <div class="task_one_img"><img src="img/merit_img03.png"></div>
+            </div>
+            <ul class="task_one_txt">
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="solve">
+        <div id="flow01">
+          <div class="title">
+            <p class="title_mark"><img
+                src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow-ttl.png">
+            </p>
+            <h2 class="title_txt">具体的な流れ</h2>
+          </div>
+          <div class="flow_list">
+            <div class="flow_one">
+              <div class="flow_one_img"><img src="img/flow_img01.png"></div>
+              <div class="flow_one_ttl">
+                <img
+                  src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num1.png"><span>アパートやビルに取付</span>
+              </div>
+              <p class="flow_one_txt">工事業者が取り付けます。</p>
+            </div>
+            <div class="flow_one">
+              <div class="flow_one_img"><img src="img/flow_img02.png"></div>
+              <div class="flow_one_ttl">
+                <img
+                  src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num2.png"><span>ID発行・登録</span>
+              </div>
+              <p class="flow_one_txt">各社、IDの登録をしていただきます。</p>
+            </div>
+            <div class="flow_one">
+              <div class="flow_one_img"><img src="img/flow_img03.png"></div>
+              <div class="flow_one_ttl">
+                <img
+                  src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num3.png"><span>アカウント付与</span>
+              </div>
+              <p class="flow_one_txt">②のID登録後、使用者にアカウントを付与。</p>
+            </div>
+            <div class="flow_one">
+              <div class="flow_one_img"><img src="img/flow_img04.png"></div>
+              <div class="flow_one_ttl">
+                <img
+                  src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num4.png"><span>現場で使う</span>
+              </div>
+              <p class="flow_one_txt">実際に現場で鍵の受け取りが出来ます。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="task" class="task_color">
+      <div class="title">
+        <p class="title_mark"><img src="img/structure.png" class=""></p>
+        <h2 class="title_txt">仕組み</h2>
+      </div>
+      <p class="task_subttl">テキストテキストテキストテキストテキストテキスト<br>テキストテキストテキストテキストテキストテキスト</p>
+      <div class="taks_backlogo">
+        <img src="img/strcuture_logo02.png">
+      </div>
+      <div class="task_list">
+        <div class="task_one">
+          <div class="task_one_in01">
+            <div class="task_one_img"><img src="img/strcuture_img01.png"></div>
+            <h3 class="task_one_ttl">管理会社</h3>
+            <ul class="task_one_txt01">
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+            </ul>
+          </div>
+        </div>
+        <div class="task_one">
+          <div class="task_one_in01">
+            <div class="task_one_img"><img src="img/strcuture_img02.png"></div>
+            <h3 class="task_one_ttl">仲介会社</h3>
+            <ul class="task_one_txt01">
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+            </ul>
+          </div>
+        </div>
+        <div class="task_one">
+          <div class="task_one_in01">
+            <div class="task_one_img"><img src="img/strcuture_img03.png"></div>
+            <h3 class="task_one_ttl">各事業</h3>
+            <ul class="task_one_txt01">
+              <li>テキストテキストテキストテキストテキスト</li>
+              <li>テキストテキストテキストテキストテキスト</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back_color">
+      <div id="comparison">
+        <div class="title">
+          <p class="title_mark"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/comparison-ttl.png"></p>
+          <h2 class="title_txt">他社比較</h2>
+        </div>
+        <div class="comparison_in">
+          <div class="comparison_img"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/comparison-man.png"></div>
+          <div class="hidden-sp"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/comparison-chart.png"></div>
+          <div class="visible-sp sp-chart"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/sp-chart.svg" width="878px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="product">
+      <div class="title">
+        <p class="title_mark"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/product-ttl.png"></p>
+        <h2 class="title_txt">キーボックス製品</h2>
+      </div>
+      <div class="product_in">
+        <div class="product_img"><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/box.png">
+        </div>
+        <div class="product_content">
+          <h3 class="product_ttl">キーボックス製品タイトル</h3>
+          <p class="product_txt">
+            テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="app">
+      <div class="app_list">
+        <div><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/app1.png"></div>
+        <div><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/app1.png"></div>
+        <div><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/app1.png"></div>
+      </div>
+    </div>
+
+    <div id="flow">
+      <div class="title">
+        <p class="title_mark"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow-ttl.png"></p>
+        <h2 class="title_txt">導入までの流れ</h2>
+      </div>
+      <div class="flow_list">
+        <div class="flow_one">
+          <div class="flow_one_img"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow1.png"></div>
+          <div class="flow_one_ttl">
+            <img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num1.png"><span>お問い合わせ</span>
+          </div>
+          <p class="flow_one_txt">サービス申し込み以下のフォームから問い合わせください。</p>
+        </div>
+        <div class="flow_one">
+          <div class="flow_one_img"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow2.png"></div>
+          <div class="flow_one_ttl">
+            <img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num2.png"><span>ご契約</span>
+          </div>
+          <p class="flow_one_txt">お見積り内容にご納得頂きましたら「ご契約」に進みます。</p>
+        </div>
+        <div class="flow_one">
+          <div class="flow_one_img"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow3.png"></div>
+          <div class="flow_one_ttl">
+            <img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num3.png"><span>機器のご提供</span>
+          </div>
+          <p class="flow_one_txt">アプリの管理者権限とサービス機器をご提供いたします。</p>
+        </div>
+        <div class="flow_one">
+          <div class="flow_one_img"><img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow4.png"></div>
+          <div class="flow_one_ttl">
+            <img
+              src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/flow_num4.png"><span>ご利用開始</span>
+          </div>
+          <p class="flow_one_txt">アプリ内にて設定・機器を設置したらご利用可能になります。</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="faq">
+      <div class="title">
+        <p class="title_mark"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/faq-ttl.png"></p>
+        <h2 class="title_txt">よくある質問</h2>
+      </div>
+      <div class="faq_list">
+        <div class="faq_one">
+          <p class="ques">契約から導入までどのくらい時間がかかりますか</p>
+          <p class="ans">契約後、すぐに設置工事業者手配をいたします。（約2週間ほど？）<br>設置工事後はお客様で必要情報の登録をしていただければすぐにご利用が可能です。</p>
+        </div>
+        <div class="faq_one">
+          <p class="ques">取り付けできない建物や場所はありますか？</p>
+          <p class="ans">基本的にはどの建物でも外壁に取り付けが可能です。</p>
+        </div>
+        <div class="faq_one">
+          <p class="ques">空室がない期間が長い場合、一時解約は可能ですか？</p>
+          <p class="ans">はい、可能です。</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="contact">
+      <div class="title">
+        <p class="title_mark"><img
+            src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/contact-ttl.png"></p>
+        <h2 class="title_txt">お問い合わせ</h2>
+      </div>
+      <p class="contact_subtxt">下記フォームをご記入のうえ、ご送信ください。<br>フォーム送信完了後、担当スタッフからご連絡させていただきます。</p>
+      <div class="contact_in">
+        <div class="contact_div">
+          <div role="form" class="wpcf7" id="wpcf7-f7-o1" lang="ja" dir="ltr">
+            <div class="screen-reader-response">
+              <p role="status" aria-live="polite" aria-atomic="true"></p>
+              <ul></ul>
+            </div>
+            <form action="/keypit-test/#wpcf7-f7-o1" method="post" class="wpcf7-form init" novalidate="novalidate"
+              data-status="init">
+              <div style="display: none;">
+                <input type="hidden" name="_wpcf7" value="7">
+                <input type="hidden" name="_wpcf7_version" value="5.5.3">
+                <input type="hidden" name="_wpcf7_locale" value="ja">
+                <input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f7-o1">
+                <input type="hidden" name="_wpcf7_container_post" value="0">
+                <input type="hidden" name="_wpcf7_posted_data_hash" value="">
+              </div>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>会社名</th>
+                    <td><span class="wpcf7-form-control-wrap company"><input type="text" name="company" value=""
+                          size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span></td>
+                  </tr>
+                  <tr>
+                    <th>都道府県</th>
+                    <td><span class="wpcf7-form-control-wrap area"><select name="area"
+                          class="wpcf7-form-control wpcf7-select" aria-invalid="false">
+                          <option value="北海道">北海道</option>
+                          <option value="青森県">青森県</option>
+                          <option value="岩手県">岩手県</option>
+                          <option value="宮城県">宮城県</option>
+                          <option value="秋田県">秋田県</option>
+                          <option value="山形県">山形県</option>
+                          <option value="福島県">福島県</option>
+                          <option value="茨城県">茨城県</option>
+                          <option value="栃木県">栃木県</option>
+                          <option value="群馬県">群馬県</option>
+                          <option value="埼玉県">埼玉県</option>
+                          <option value="千葉県">千葉県</option>
+                          <option value="東京都">東京都</option>
+                          <option value="神奈川県">神奈川県</option>
+                          <option value="新潟県">新潟県</option>
+                          <option value="富山県">富山県</option>
+                          <option value="石川県">石川県</option>
+                          <option value="福井県">福井県</option>
+                          <option value="山梨県">山梨県</option>
+                          <option value="長野県">長野県</option>
+                          <option value="岐阜県">岐阜県</option>
+                          <option value="静岡県">静岡県</option>
+                          <option value="愛知県">愛知県</option>
+                          <option value="三重県">三重県</option>
+                          <option value="滋賀県">滋賀県</option>
+                          <option value="京都府">京都府</option>
+                          <option value="大阪府">大阪府</option>
+                          <option value="兵庫県">兵庫県</option>
+                          <option value="奈良県">奈良県</option>
+                          <option value="和歌山県">和歌山県</option>
+                          <option value="鳥取県">鳥取県</option>
+                          <option value="島根県">島根県</option>
+                          <option value="岡山県">岡山県</option>
+                          <option value="広島県">広島県</option>
+                          <option value="山口県">山口県</option>
+                          <option value="徳島県">徳島県</option>
+                          <option value="香川県">香川県</option>
+                          <option value="愛媛県">愛媛県</option>
+                          <option value="高知県">高知県</option>
+                          <option value="福岡県">福岡県</option>
+                          <option value="佐賀県">佐賀県</option>
+                          <option value="長崎県">長崎県</option>
+                          <option value="熊本県">熊本県</option>
+                          <option value="大分県">大分県</option>
+                          <option value="宮崎県">宮崎県</option>
+                          <option value="鹿児島県">鹿児島県</option>
+                          <option value="沖縄県">沖縄県</option>
+                        </select></span></td>
+                  </tr>
+                  <tr>
+                    <th>所在地</th>
+                    <td><span class="wpcf7-form-control-wrap address"><input type="text" name="address" value=""
+                          size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span></td>
+                  </tr>
+                  <tr>
+                    <th>お名前</th>
+                    <td><span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name" value=""
+                          size="40" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required"
+                          aria-required="true" aria-invalid="false"></span></td>
+                  </tr>
+                  <tr>
+                    <th>メールアドレス</th>
+                    <td><span class="wpcf7-form-control-wrap your-email"><input type="email" name="your-email" value=""
+                          size="40"
+                          class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email"
+                          aria-required="true" aria-invalid="false"></span></td>
+                  </tr>
+                  <tr>
+                    <th>電話番号</th>
+                    <td><span class="wpcf7-form-control-wrap tel"><input type="tel" name="tel" value="" size="40"
+                          class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel"
+                          aria-invalid="false"></span></td>
+                  </tr>
+                  <tr>
+                    <th>お問合せ内容</th>
+                    <td><span class="wpcf7-form-control-wrap textarea"><textarea name="textarea" cols="40" rows="10"
+                          class="wpcf7-form-control wpcf7-textarea" aria-invalid="false"></textarea></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="contact_submit"><input type="submit" value="送信する"
+                  class="wpcf7-form-control has-spinner wpcf7-submit"><span class="wpcf7-spinner"></span></div>
+              <div class="wpcf7-response-output" aria-hidden="true"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <a href="#pagetop" class="fixed_bottom" style="display: none;"><img
+        src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/page_top.svg" width="100px"></a>
+    <div class="footer_logo"><img src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/img/logo.svg"
+        width="94px"></div>
+    <p class="copyright">©2022 keypit All Right Reserved.</p>
+  </footer>
+
+  <script src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-smooth-scroll/2.2.0/jquery.smooth-scroll.min.js"></script>
+  <script src="https://fujiwebcreator.com/keypit-test/wp-content/themes/keypit/js/common.js"></script>
+  <script type="text/javascript"
+    src="https://fujiwebcreator.com/keypit-test/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.9"
+    id="regenerator-runtime-js"></script>
+  <script type="text/javascript"
+    src="https://fujiwebcreator.com/keypit-test/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0"
+    id="wp-polyfill-js"></script>
+  <script type="text/javascript" id="contact-form-7-js-extra">
+    /* <![CDATA[ */
+    var wpcf7 = { "api": { "root": "https:\/\/fujiwebcreator.com\/keypit-test\/index.php\/wp-json\/", "namespace": "contact-form-7\/v1" } };
+/* ]]> */
+  </script>
+  <script type="text/javascript"
+    src="https://fujiwebcreator.com/keypit-test/wp-content/plugins/contact-form-7/includes/js/index.js?ver=5.5.3"
+    id="contact-form-7-js"></script>
+
+</body>
+
+</html>
